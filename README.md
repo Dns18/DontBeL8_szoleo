@@ -17,6 +17,5 @@ A **Szóleó** egy magyar nyelvű, böngészőben játszható szórejtvény ját
 
 ## Technológia
 
-- Frontend: HTML, CSS, JavaScript (esetleg React)
-- Backend (opcionális): Node.js / Python Flask vagy Django REST (ha szükséges API-ra)
-- Deployment: Netlify / Vercel / GitHub Pages
+- Frontend: HTML, CSS, JavaScript
+...
