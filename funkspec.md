@@ -27,7 +27,9 @@ A **Szóleó** egy online, böngészőben játszható szórejtvény játék, ame
 ### 2.3 Visszajelzés
 Minden tipp után a rendszer vizuálisan visszajelzi:
 - 🟩 Zöld: helyes betű, jó pozícióban
+- 🟦 Kék: helyes betű más ékezettel, jó pozícióban 
 - 🟨 Sárga: helyes betű, rossz pozícióban
+- 🟪 Lila: helyes betű más ékezettel, rossz pozícióban
 - ⬜️ Szürke: a betű nem szerepel a szóban
 
 ### 2.4 Játék vége
@@ -69,4 +71,5 @@ Minden tipp után a rendszer vizuálisan visszajelzi:
 **Dokumentum verziója:** 1.0  
 **Dátum:** 2025-09-15  
 **Projekt:** Szóleó  
+
 **Készítette:** DontBeL8
