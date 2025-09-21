@@ -1,6 +1,6 @@
 # Követelményspecifikáció – Szóleó
 
-Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tartalmazza. A játék célja, hogy a felhasználó meghatározott számú próbálkozásból kitaláljon egy ötbetűs magyar szót.
+Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tartalmazza. A játék célja, hogy a felhasználó meghatározott számú próbálkozásból kitaláljon egy hatbetűs magyar szót, hét próbálkozásból.
 
 ---
 
@@ -8,14 +8,13 @@ Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tart
 
 | Azonosító | Leírás |
 |-----------|--------|
-| F1 | A rendszer tudjon véletlenszerűen szót választani egy listából. |
-| F2 | A felhasználó maximum 6 próbálkozással tippelhet egy 5 betűs magyar szót. |
-| F3 | A rendszer minden tipp után jelezze vissza a betűk helyességét színkódolással. |
-| F4 | A bevitt szó legyen érvényes (szerepeljen a szótárban). |
-| F5 | A játék végén jelenjen meg a helyes szó. |
-| F6 | Legyen napi kihívás funkció (napi egy meghatározott szó). |
-| F7 | Legyen gyakorló mód véletlenszerű szavakkal. |
-| F8 | Legyen lehetőség új játék indítására a játék végén. |
+| 1.1 | A rendszer tudjon véletlenszerűen szót választani egy listából. |
+| 1.2 | A felhasználó maximum 7 próbálkozással tippelhet egy 6 betűs magyar szót. |
+| 1.3 | A rendszer minden tipp után jelezze vissza a betűk helyességét színkódolással. |
+| 1.4 | A bevitt szó legyen érvényes (szerepeljen a szótárban). |
+| 1.5 | A játék végén jelenjen meg a helyes szó. |
+| 1.6 | Lehessen új szót generálni. |
+| 1.7 | Legyen lehetőség új játék indítására a játék végén. |
 
 ---
 
@@ -23,12 +22,12 @@ Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tart
 
 | Azonosító | Leírás |
 |-----------|--------|
-| NF1 | A játék legyen reszponzív (mobilbarát). |
-| NF2 | Az UI legyen letisztult és felhasználóbarát. |
-| NF3 | A játék maximum 2 másodperc alatt töltődjön be. |
-| NF4 | A játék működjön modern böngészőkben (Chrome, Firefox, Safari, Edge). |
-| NF5 | Legyen támogatva sötét / világos téma. |
-| NF6 | A rendszer ne engedje meg nem-alfabetikus karakterek bevitelét. |
+| 2.1 | A játék legyen reszponzív (mobilbarát). |
+| 2.2 | Az UI legyen letisztult és felhasználóbarát. |
+| 2.3 | A játék maximum 3 másodperc alatt töltődjön be. |
+| 2.4 | A játék működjön modern böngészőkben (Chrome, Firefox, Safari, Edge). |
+| 2.5 | Legyen támogatva sötét / világos téma. |
+| 2.6 | A rendszer ne engedje meg nem-alfabetikus karakterek bevitelét. |
 
 ---
 
@@ -36,10 +35,10 @@ Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tart
 
 | Azonosító | Leírás |
 |-----------|--------|
-| T1 | A frontend készülhet Vanilla JS-ben vagy React-ben. |
-| T2 | A szólista egy JSON fájlban vagy API-n keresztül elérhető formátumban legyen tárolva. |
-| T3 | Az alkalmazás legyen hosztolható statikus weboldalként (Netlify, GitHub Pages, Vercel stb.). |
-| T4 | A backend opcionális, csak ha statisztikát vagy napi szót akarunk szerver oldalon kezelni. |
+| 3.1 | A frontend készülhet Vanilla JS-ben vagy React-ben. |
+| 3.2 | A szólista egy JSON fájlban vagy API-n keresztül elérhető formátumban legyen tárolva. |
+| 3.3 | Az alkalmazás legyen hosztolható statikus weboldalként (Netlify, GitHub Pages, Vercel stb.). |
+| 3.4 | A backend opcionális, csak ha statisztikát vagy napi szót akarunk szerver oldalon kezelni. |
 
 
 ---
@@ -48,4 +47,5 @@ Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tart
 
 **Dokumentum verziója:** 1.0  
 **Dátum:** 2025-09-15  
+
 **Készítette:** DontBeL8
