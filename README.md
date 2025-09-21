@@ -6,11 +6,13 @@ A **Szóleó** egy magyar nyelvű, böngészőben játszható szórejtvény ját
 
 ## Fő jellemzők
 
-- 5 betűs magyar szavak
-- 6 próbálkozás a helyes szó kitalálására
+- 6 betűs magyar szavak
+- 7 próbálkozás a helyes szó kitalálására
 - Betűk színkódolása visszajelzésként:
   - 🟩 jó helyen jó betű
+  - 🟦 jó helyen lévő betű, de más ékezettel 
   - 🟨 rossz helyen lévő jó betű
+  - 🟪 rossz helyen lévő betű, de más ékezettel  
   - ⬜️ nem szerepel a szóban
 - Egyszerű, mobilbarát felhasználói felület
 - Sötét / világos mód
