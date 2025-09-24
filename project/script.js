@@ -1,13 +1,16 @@
-const WORD_LENGTH = 5;
+    const WORD_LENGTH = 5;
     const MAX_GUESSES = 6;
 
     // Magyar szólista ékezetekkel
-    const WORDS = [
-      'árvíz','fűzfa','házik','kőris','lábos','műsor','nádas','őzike','pázsit','részeg',
-      'sárga','tűzfa','üdvös','várja','zsiráf','ablak','bárka','cserép','darázs','éjjel',
-      'fáklya','gömböc','hídon','írása','játék','kávéz','lámpa','mézes','nővér','óceán',
-      'péntek','rózsa','sütés','tükör','ügyes','város','zöldség','almafa','barát','citrom',
-    ].map(w=>w.toLowerCase());
+   let WORDS = [];
+
+fetch('szolista.json')
+  .then(response => response.json())
+  .then(jsonObj => {
+    WORDS = jsonObj.szavak.map(s => s.toLowerCase());
+    startGame();  // start the game after loading words
+  })
+  .catch(err => console.error("Hiba a szólista betöltésekor:", err));
 
     const boardEl = document.getElementById('board');
     const keyboardEl = document.getElementById('keyboard');
