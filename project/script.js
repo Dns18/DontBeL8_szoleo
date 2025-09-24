@@ -233,8 +233,8 @@ fetch('szolista.json')
       }, WORD_LENGTH * 250 + 200);
     }
 
+    // Feladom button
     const revealBtn = document.getElementById('revealBtn');
-
     revealBtn.addEventListener('click', () => {
       if (gameOver) return;
 
@@ -242,8 +242,11 @@ fetch('szolista.json')
       for (let c = 0; c < WORD_LENGTH; c++) {
         const tile = document.getElementById(`tile-${currentRow}-${c}`);
         tile.textContent = solutionArr[c].toUpperCase();
-        // Remove any previous coloring classes
+        // Töröljük az eddigi színeket
         tile.classList.remove('correct', 'present', 'absent', 'almostcorrect', 'almostpresent', 'revealed', 'pop');
+
+        // 'absent' színt rakunk a jelenlegi sorra, mert feladjuk
+        tile.classList.add('absent');
       }
 
       message(`A szó: ${solution.toUpperCase()}`, 6000);
