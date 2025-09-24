@@ -4,11 +4,12 @@
     // Magyar szólista ékezetekkel
    let WORDS = [];
 
+// Beolvassuk az 5 betűs szavakat json-ből
 fetch('szolista.json')
   .then(response => response.json())
   .then(jsonObj => {
     WORDS = jsonObj.szavak.map(s => s.toLowerCase());
-    startGame();  // start the game after loading words
+    startGame();
   })
   .catch(err => console.error("Hiba a szólista betöltésekor:", err));
 
@@ -41,8 +42,8 @@ fetch('szolista.json')
 
     const KEYS = [
       ['q','w','e','r','t','z','u','i','o','p','ő','ú'],
-      ['a','s','d','f','g','h','j','k','l','é','á','ű'],
-      ['Enter','y','x','c','v','b','n','m','ö','ü','ó','Backspace']
+      ['a','s','d','f','g','h','j','k','l','í','é','á','ű'],
+      ['Enter','y','x','c','v','b','n','m','ö','ü','Backspace']
     ];
 
     function createKeyboard(){
