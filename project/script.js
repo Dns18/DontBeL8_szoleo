@@ -233,6 +233,23 @@ fetch('szolista.json')
       }, WORD_LENGTH * 250 + 200);
     }
 
+    const revealBtn = document.getElementById('revealBtn');
+
+    revealBtn.addEventListener('click', () => {
+      if (gameOver) return;
+
+      const solutionArr = solution.split('');
+      for (let c = 0; c < WORD_LENGTH; c++) {
+        const tile = document.getElementById(`tile-${currentRow}-${c}`);
+        tile.textContent = solutionArr[c].toUpperCase();
+        // Remove any previous coloring classes
+        tile.classList.remove('correct', 'present', 'absent', 'almostcorrect', 'almostpresent', 'revealed', 'pop');
+      }
+
+      message(`A szó: ${solution.toUpperCase()}`, 6000);
+      gameOver = true;
+    });
+
     window.addEventListener('keydown', (e)=>{
       if(e.key==='Enter' || e.key==='Backspace' || /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ]$/.test(e.key)){
         e.preventDefault();
