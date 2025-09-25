@@ -1,13 +1,17 @@
-const WORD_LENGTH = 5;
+    const WORD_LENGTH = 5;
     const MAX_GUESSES = 6;
 
     // Magyar szólista ékezetekkel
-    const WORDS = [
-      'árvíz','fűzfa','házik','kőris','lábos','műsor','nádas','őzike','pázsit','részeg',
-      'sárga','tűzfa','üdvös','várja','zsiráf','ablak','bárka','cserép','darázs','éjjel',
-      'fáklya','gömböc','hídon','írása','játék','kávéz','lámpa','mézes','nővér','óceán',
-      'péntek','rózsa','sütés','tükör','ügyes','város','zöldség','almafa','barát','citrom',
-    ].map(w=>w.toLowerCase());
+   let WORDS = [];
+
+// Beolvassuk az 5 betűs szavakat json-ből
+fetch('szolista.json')
+  .then(response => response.json())
+  .then(jsonObj => {
+    WORDS = jsonObj.szavak.map(s => s.toLowerCase());
+    startGame();
+  })
+  .catch(err => console.error("Hiba a szólista betöltésekor:", err));
 
     const boardEl = document.getElementById('board');
     const keyboardEl = document.getElementById('keyboard');
@@ -38,8 +42,8 @@ const WORD_LENGTH = 5;
 
     const KEYS = [
       ['q','w','e','r','t','z','u','i','o','p','ő','ú'],
-      ['a','s','d','f','g','h','j','k','l','é','á','ű'],
-      ['Enter','y','x','c','v','b','n','m','ö','ü','ó','Backspace']
+      ['a','s','d','f','g','h','j','k','l','í','é','á','ű'],
+      ['Enter','y','x','c','v','b','n','m','ö','ü','Backspace']
     ];
 
     function createKeyboard(){
@@ -110,58 +114,144 @@ const WORD_LENGTH = 5;
       revealGuess(guess);
     }
 
-    function revealGuess(guess){
+    function revealGuess(guess) {
       const solutionArr = solution.split('');
       const guessArr = guess.split('');
       const tileEls = [];
-      for(let c=0;c<WORD_LENGTH;c++) tileEls.push(document.getElementById(`tile-${currentRow}-${c}`));
+
+      for (let c = 0; c < WORD_LENGTH; c++) {
+        tileEls.push(document.getElementById(`tile-${currentRow}-${c}`));
+      }
 
       const result = Array(WORD_LENGTH).fill('absent');
+
+      // Számolja meg a betűket az eredménybe
       const solCount = {};
-      for(let i=0;i<WORD_LENGTH;i++){
-        const s = solutionArr[i]; solCount[s] = (solCount[s]||0)+1;
-      }
-      for(let i=0;i<WORD_LENGTH;i++){
-        if(guessArr[i]===solutionArr[i]){ result[i]='correct'; solCount[guessArr[i]]--; }
-      }
-      for(let i=0;i<WORD_LENGTH;i++){
-        if(result[i]==='correct') continue;
-        const g = guessArr[i];
-        if(solCount[g] && solCount[g]>0){ result[i]='present'; solCount[g]--; }
+      for (let i = 0; i < WORD_LENGTH; i++) {
+        const s = solutionArr[i];
+        solCount[s] = (solCount[s] || 0) + 1;
       }
 
-      tileEls.forEach((el,i)=>{
-        el.classList.add('pop');
-        el.classList.add('revealed');
-        el.classList.add(result[i]);
+      // Ékezet map a magánhangzóknak
+      const accentMap = {
+        'a': 'aá', 'á': 'aá',
+        'e': 'eé', 'é': 'eé',
+        'i': 'ií', 'í': 'ií',
+        'o': 'oóöő', 'ó': 'oóöő', 'ö': 'oóöő', 'ő': 'oóöő',
+        'u': 'uúüű', 'ú': 'uúüű', 'ü': 'uúüű', 'ű': 'uúüű'
+      };
+      const vowels = Object.keys(accentMap);
+
+      function getAccentGroup(letter) {
+        return accentMap[letter.toLowerCase()] || letter.toLowerCase();
+      }
+
+      // Első: a helyes betűk
+      for (let i = 0; i < WORD_LENGTH; i++) {
+        if (guessArr[i] === solutionArr[i]) {
+          result[i] = 'correct';
+          solCount[guessArr[i]]--;
+        }
+      }
+
+      // Második: jelenléti vagy ékezet hibák
+      for (let i = 0; i < WORD_LENGTH; i++) {
+        if (result[i] === 'correct') continue;
+
+        const g = guessArr[i];
+        const gGroup = getAccentGroup(g);
+
+        let found = false;
+
+        // Csekkolja az ékezeteket máshol
+        for (let j = 0; j < WORD_LENGTH; j++) {
+          if (i === j) continue;
+          if (g === solutionArr[j] && solCount[solutionArr[j]] > 0) {
+            result[i] = 'present';
+            solCount[solutionArr[j]]--;
+            found = true;
+            break;
+          }
+        }
+
+        if (found) continue;
+
+        // Csekkolja a rossz ékezeteket
+        for (let j = 0; j < WORD_LENGTH; j++) {
+          if (solCount[solutionArr[j]] > 0 && getAccentGroup(solutionArr[j]) === gGroup) {
+            if (vowels.includes(g.toLowerCase())) {
+              if (i === j) {
+                result[i] = 'almostcorrect'; // blue
+              } else {
+                result[i] = 'almostpresent'; // purple
+              }
+              solCount[solutionArr[j]]--;
+            }
+            break;
+          }
+        }
+      }
+
+      // Rakja be a helyes színeket a négyzetre/billentyűre
+      tileEls.forEach((el, i) => {
+        el.classList.remove('absent', 'present', 'correct', 'almostcorrect', 'almostpresent');
+        el.classList.add('pop', 'revealed', result[i]);
         el.setAttribute('aria-label', result[i]);
-        const keyEl = document.getElementById('key-'+guessArr[i].toLowerCase());
-        if(keyEl){
+
+        const keyEl = document.getElementById('key-' + guessArr[i].toLowerCase());
+        if (keyEl) {
           const prev = keyEl.dataset.state;
-          const rank = {absent:0,present:1,correct:2};
-          if(!prev || rank[result[i]] > rank[prev]){
+          const rank = { absent: 0, almostcorrect: 1, almostpresent: 2, present: 3, correct: 4 };
+          if (!prev || rank[result[i]] > rank[prev]) {
             keyEl.dataset.state = result[i];
+            keyEl.classList.remove('absent', 'present', 'correct', 'almostcorrect', 'almostpresent');
             keyEl.classList.add(result[i]);
           }
         }
-        setTimeout(()=>el.classList.remove('pop'), 300);
+
+        setTimeout(() => el.classList.remove('pop'), 300);
       });
 
-      setTimeout(()=>{
-        if(guess===solution){
-          const msgEl = document.getElementById('message');
-          msgEl.classList.add('win');
-          message(`Nyertél! A szó: ${solution.toUpperCase()}`,0);
-          setTimeout(()=>msgEl.classList.remove('win'), 5000); // 5 másodpercig marad
-          gameOver=true; return;
+      // Nyerés észlelő
+      setTimeout(() => {
+        if (guess === solution) {
+          messageEl.classList.add('win');
+          message(`Nyertél! A szó: ${solution.toUpperCase()}`, 0);
+          setTimeout(() => messageEl.classList.remove('win'), 5000);
+          gameOver = true;
+          return;
         }
-        currentRow++; currentCol=0;
-        if(currentRow>=MAX_GUESSES){
+
+        currentRow++;
+        currentCol = 0;
+
+        if (currentRow >= MAX_GUESSES) {
           message(`Vesztettél. A szó: ${solution.toUpperCase()}`, 6000);
-          gameOver=true; return;
+          gameOver = true;
+          return;
         }
-      }, WORD_LENGTH*250 + 200);
+      }, WORD_LENGTH * 250 + 200);
     }
+
+    // Feladom button
+    const revealBtn = document.getElementById('revealBtn');
+    revealBtn.addEventListener('click', () => {
+      if (gameOver) return;
+
+      const solutionArr = solution.split('');
+      for (let c = 0; c < WORD_LENGTH; c++) {
+        const tile = document.getElementById(`tile-${currentRow}-${c}`);
+        tile.textContent = solutionArr[c].toUpperCase();
+        // Töröljük az eddigi színeket
+        tile.classList.remove('correct', 'present', 'absent', 'almostcorrect', 'almostpresent', 'revealed', 'pop');
+
+        // 'absent' színt rakunk a jelenlegi sorra, mert feladjuk
+        tile.classList.add('absent');
+      }
+
+      message(`A szó: ${solution.toUpperCase()}`, 6000);
+      gameOver = true;
+    });
 
     window.addEventListener('keydown', (e)=>{
       if(e.key==='Enter' || e.key==='Backspace' || /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ]$/.test(e.key)){
