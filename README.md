@@ -3,6 +3,7 @@
 # Szóleó - Szó kitaláló jaték
 
 Ez a branch a **GitHub Pages**-hez készült, így a fájlok itt futtathatók böngészőben.
+[🎮 Játék itt](https://dns18.github.io/DontBeL8_szoleo/)
 
 A **Szóleó** egy magyar nyelvű, böngészőben játszható szórejtvény játék, a Wordle mintájára. A játékos feladata, hogy kitaláljon egy véletlenszerűen kiválasztott szót adott számú próbálkozás alatt.
 
