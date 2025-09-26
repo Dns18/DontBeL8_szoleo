@@ -27,21 +27,7 @@ A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal
 
 ### 2.2 Architektúra ábra (logikai modell)
 
-Felhasználó
-│
-▼
-Felhasználói felület (HTML, CSS)
-│
-▼
-Játéklogika (JavaScript)
-├── Szó kiválasztás
-├── Ellenőrzés
-├── Színkódolás
-│
-▼
-Adatok
-├── Szólista (JSON)
-└── Állapot (localStorage)
+<img width="512" height="768" alt="logikai modell" src="https://github.com/user-attachments/assets/a2521147-3948-4f57-8c58-8b314b184a4c" />
 
 ---
 
@@ -103,3 +89,42 @@ Adatok
 - **Hozzáférhetőség**: megfelelő kontraszt, színek mellé vizuális jelek  
 
 ---
+
+## 7. Rendszerkomponensek részletezése
+
+**Játéklogika modulok**
+- Szóválasztó modul
+- Érvényesítés modul
+- Értékelő modul
+- Állapotkezelő modul
+- Felhasználói interakció modul
+
+**UI modulok**
+- Rács megjelenítő
+- Virtuális billentyűzet
+- Értesítési rendszer
+
+## 8. Adatáramlás
+
+<img width="512" height="768" alt="adataramlas" src="https://github.com/user-attachments/assets/64f67c16-7e52-4742-9563-f670a3c2afd1" />
+
+## 9. Hibakezelés és edge-case-ek
+- Érvénytelen szó → felhasználó értesítése
+- Rövid vagy hosszú szó → hibajelzés
+- LocalStorage nem elérhető → játék működése alapértelmezett állapottal
+- Több próbálkozás a max. szám után → új játékra ösztönzés
+
+## 10. Biztonsági és adatvédelmi szempontok
+- Adatok kizárólag kliens oldalon tárolódnak
+- Nem tárolunk személyes adatot
+- JSON fájl integritásának ellenőrzése betöltéskor
+
+## 11. Tesztelés
+- Egységtesztek: szóválasztó, értékelő, érvényesítő modulok
+- UI tesztek: rács, billentyűzet, témaváltás
+- Integrációs tesztek: teljes játékmenet, localStorage működés
+
+## 12. Kiegészítő diagramok
+- **Komponens diagram:** UI ↔ Játéklogika ↔ Adatok
+- **Folyamatábra:** játék indítása → szóválasztás → felhasználói input → ellenőrzés → visszajelzés → próbálkozás számolás → nyert/vesztett állapot
+- **Állapotdiagram:** játék indítás → próbálkozás → győzelem/vesztés → új játék
