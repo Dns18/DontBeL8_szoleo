@@ -157,3 +157,37 @@ html, body {
   60%  { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+.info-icon {
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  margin-left: 8px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.info-tooltip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 120%;           /* felfelé jelenik meg */
+  transform: translateX(-50%);
+  background: var(--tile);
+  color: var(--text);
+  padding: 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.14);
+  font-size: 16px;
+  min-width: 220px;
+  max-width: 90vw;
+  word-break: break-word;
+  z-index: 10;
+  white-space: pre-line;
+  text-align: left;
+}
+
+.info-icon:hover .info-tooltip,
+.info-icon:focus .info-tooltip {
+  display: block;
+}
