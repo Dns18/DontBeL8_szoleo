@@ -24,6 +24,21 @@ fetch('szolista.json')
     let board = Array.from({length:MAX_GUESSES},()=>Array(WORD_LENGTH).fill(''));
     let state = Array.from({length:MAX_GUESSES},()=>Array(WORD_LENGTH).fill(''));
     let gameOver = false;
+let score = 0;
+let scoreList = []; // pontok listája
+
+function updateScoreboard() {
+  const scoreboard = document.getElementById('scoreboard');
+  if (!scoreList.length) {
+    scoreboard.innerHTML = '<em>Még nincs pontod.</em>';
+    return;
+  }
+  scoreboard.innerHTML = `<b>Pontok:</b><ul style="margin-top:6px;">${
+    scoreList.map((item, i) =>
+      `<li>Játék ${i+1}: <b>${item.word.toUpperCase()}</b> — <span style="color:${item.points>0?'green':'red'}">${item.points} pont</span></li>`
+    ).join('')
+  }</ul><div style="margin-top:8px;"><b>Összesen: ${score} pont</b></div>`;
+}
 
     function createBoard(){
       boardEl.innerHTML='';
@@ -73,6 +88,7 @@ fetch('szolista.json')
       board = Array.from({length:MAX_GUESSES},()=>Array(WORD_LENGTH).fill(''));
       state = Array.from({length:MAX_GUESSES},()=>Array(WORD_LENGTH).fill(''));
       createBoard(); createKeyboard(); message('');
+      updateScoreboard();
     }
 
     function message(txt, timeout=2000){
@@ -112,6 +128,11 @@ fetch('szolista.json')
       if(currentCol<WORD_LENGTH){ message('Túl rövid'); return; }
       const guess = board[currentRow].join('');
       revealGuess(guess);
+    }
+
+    function getPoints(row) {
+      // Ha elsőre találja ki: 6 pont, ha utolsóra: 1 pont
+      return MAX_GUESSES - row;
     }
 
     function revealGuess(guess) {
@@ -215,10 +236,14 @@ fetch('szolista.json')
       // Nyerés észlelő
       setTimeout(() => {
         if (guess === solution) {
+          const points = getPoints(currentRow);
+          score += points;
+          scoreList.push({ word: solution, points });
           messageEl.classList.add('win');
-          message(`Nyertél! A szó: ${solution.toUpperCase()}`, 0);
+          message(`Nyertél! A szó: ${solution.toUpperCase()} +${points} pont`, 0);
           setTimeout(() => messageEl.classList.remove('win'), 5000);
           gameOver = true;
+          updateScoreboard();
           return;
         }
 
@@ -226,8 +251,10 @@ fetch('szolista.json')
         currentCol = 0;
 
         if (currentRow >= MAX_GUESSES) {
-          message(`Vesztettél. A szó: ${solution.toUpperCase()}`, 6000);
+          scoreList.push({ word: solution, points: 0 });
+          message(`Vesztettél. A szó: ${solution.toUpperCase()} | Pont: 0`, 6000);
           gameOver = true;
+          updateScoreboard();
           return;
         }
       }, WORD_LENGTH * 250 + 200);
@@ -259,13 +286,18 @@ fetch('szolista.json')
         handleKey(e.key.length===1? e.key : e.key);
       }
     });
-    newBtn.addEventListener('click', startGame);
+
+    newBtn.addEventListener('click', () => {
+      startGame();
+      // Új játék indításakor nem nullázzuk a score-t, így folyamatosan gyűjtheti a pontokat
+    });
 
     const themeBtn = document.getElementById('themeBtn');
-    themeBtn.addEventListener('click', () => {
+themeBtn.addEventListener('click', () => {
   document.body.classList.toggle('light');
-  themeBtn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+  themeBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
 });
+
     startGame();
 
     window.__WORDLE = {setWords:(arr)=>{ if(Array.isArray(arr) && arr.length){ WORDS.length=0; arr.forEach(s=>WORDS.push(s.toLowerCase())); startGame(); } }};
