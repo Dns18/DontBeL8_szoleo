@@ -259,7 +259,6 @@ fetch('szolista.json')
         handleKey(e.key.length===1? e.key : e.key);
       }
     });
-
     newBtn.addEventListener('click', startGame);
 
     startGame();
