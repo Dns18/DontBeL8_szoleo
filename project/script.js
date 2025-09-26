@@ -1,4 +1,4 @@
-    const WORD_LENGTH = 5;
+const WORD_LENGTH = 5;
     const MAX_GUESSES = 6;
 
     // Magyar szólista ékezetekkel
@@ -261,6 +261,11 @@ fetch('szolista.json')
     });
     newBtn.addEventListener('click', startGame);
 
+    const themeBtn = document.getElementById('themeBtn');
+    themeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('light');
+  themeBtn.textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+});
     startGame();
 
     window.__WORDLE = {setWords:(arr)=>{ if(Array.isArray(arr) && arr.length){ WORDS.length=0; arr.forEach(s=>WORDS.push(s.toLowerCase())); startGame(); } }};
