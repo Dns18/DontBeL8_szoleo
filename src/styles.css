@@ -1,0 +1,333 @@
+/* src/styles.css */
+
+/* ------------------------
+   Színváltozók (default = dark)
+------------------------ */
+:root {
+  --bg: #121213;
+  --tile: #3a3a3c;
+  --text: #d7dadc;
+  --absent: #888888;
+  --present: #b59f3b;
+  --correct: #538d4e;
+  --almostpresent: #a36aff;
+  --almostcorrect: #4ea3ff;
+  --kbd: #818384;
+  --kbd-bg: #202124;
+  --btn-bg: #2c2c2f;
+  --btn-text: #d7dadc;
+  --btn-hover: #444448;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* light mode override */
+body.light {
+  --bg: #f6f6f6;
+  --tile: #e0e0e0;
+  --text: #222222;
+  --absent: #cccccc;
+  --present: #eabf4b;
+  --correct: #6fcf97;
+  --almostpresent: #c9a3ff;
+  --almostcorrect: #7ecbff;
+  --kbd: #222222;
+  --kbd-bg: #eaeaea;
+  --btn-bg: #ffffff;
+  --btn-text: #222222;
+  --btn-hover: #e0e0e0;
+}
+
+/* ------------------------
+   Globális reset és alapok
+------------------------ */
+* {
+  box-sizing: border-box;
+}
+
+/* teljes képernyős, középre igazított body */
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* csomagoló konténer */
+.wrap {
+  max-width: 700px;
+  margin: 32px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Cím */
+h1 {
+  text-align: center;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+/* #game szekció (grid elrendezés header–body–footer) */
+#game {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+}
+
+/* ------------------------
+   Játéktábla
+------------------------ */
+.board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.tile {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tile);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 28px;
+  user-select: none;
+  transition: transform 250ms ease, background 200ms ease;
+}
+
+.tile.revealed {
+  color: white;
+}
+
+.tile.absent {
+  background: var(--absent);
+}
+
+.tile.present {
+  background: var(--present);
+}
+
+.tile.correct {
+  background: var(--correct);
+}
+
+.tile.almostcorrect {
+  background: var(--almostcorrect);
+  color: white;
+}
+
+.tile.almostpresent {
+  background: var(--almostpresent);
+  color: white;
+}
+
+/* ------------------------
+   Virtuális billentyűzet
+------------------------ */
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  user-select: none;
+}
+
+.keyrow {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.key {
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: var(--kbd-bg);
+  color: var(--kbd);
+  min-width: 43px;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.key.wide {
+  min-width: 72px;
+}
+
+.key.absent {
+  background: var(--absent);
+  color: white;
+}
+
+.key.present {
+  background: var(--present);
+  color: white;
+}
+
+.key.correct {
+  background: var(--correct);
+  color: white;
+}
+
+.key.almostcorrect {
+  background: var(--almostcorrect);
+  color: white;
+}
+
+.key.almostpresent {
+  background: var(--almostpresent);
+  color: white;
+}
+
+/* ------------------------
+   Vezérlők és infó
+------------------------ */
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+button.btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+button.btn:hover,
+button.btn:focus {
+  background: var(--btn-hover);
+  color: var(--text);
+  outline: none;
+}
+
+/* infó tooltip */
+.info-icon {
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  margin-left: 8px;
+}
+
+.info-tooltip {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 120%;
+  transform: translateX(-50%);
+  background: var(--tile);
+  color: var(--text);
+  padding: 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
+  font-size: 16px;
+  min-width: 220px;
+  max-width: 90vw;
+  white-space: pre-line;
+  text-align: left;
+  z-index: 10;
+}
+
+.info-icon:hover .info-tooltip,
+.info-icon:focus .info-tooltip {
+  display: block;
+}
+
+/* ------------------------
+   Üzenetek, animációk
+------------------------ */
+.msg {
+  min-height: 22px;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.pop {
+  animation: pop-in 0.5s cubic-bezier(0.22, 1.25, 0.36, 1);
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+    box-shadow: 0 0 0px #ffffff;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+    box-shadow: 0 0 8px #ffffff;
+  }
+  80% {
+    transform: scale(0.97);
+    box-shadow: 0 0 2px #ffffff;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0px #ffffff;
+  }
+}
+
+.msg.win {
+  animation: win-pop 0.7s cubic-bezier(0.22, 1.25, 0.36, 1.01);
+  background: #ffe066;
+  color: #222;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+}
+
+@keyframes win-pop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------
+   Responsive
+------------------------ */
+@media (max-width: 600px) {
+  .tile {
+    font-size: 20px;
+  }
+  .wrap {
+    padding: 8px;
+    margin-top: 150px;
+  }
+  .board {
+    max-width: 350px;
+    width: 100%;
+  }
+}
