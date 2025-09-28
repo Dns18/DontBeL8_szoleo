@@ -9,7 +9,7 @@ Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tart
 | Azonosító | Leírás |
 |-----------|--------|
 | 1.1 | A rendszer tudjon véletlenszerűen szót választani egy listából. |
-| 1.2 | A felhasználó maximum 7 próbálkozással tippelhet egy 6 betűs magyar szót. |
+| 1.2 | A felhasználó maximum 6 próbálkozással tippelhet egy 5 betűs magyar szót. |
 | 1.3 | A rendszer minden tipp után jelezze vissza a betűk helyességét színkódolással. |
 | 1.4 | A bevitt szó legyen érvényes (szerepeljen a szótárban). |
 | 1.5 | A játék végén jelenjen meg a helyes szó. |
@@ -49,3 +49,4 @@ Ez a dokumentum a **Szóleó** nevű szórejtvény játék követelményeit tart
 **Dátum:** 2025-09-15  
 
 **Készítette:** DontBeL8
+
