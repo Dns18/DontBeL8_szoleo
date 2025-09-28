@@ -8,7 +8,7 @@ function Controls({ onNewGame, onGiveUp, darkMode, toggleDarkMode }) {
       <button className="btn" onClick={toggleDarkMode}>
         {darkMode ? "☀️" : "🌙"}
       </button>
-      <button className="info-icon" tabIndex={0} aria-label="Játékinfó">ℹ️
+      <button className="info-icon btn" tabIndex={0} aria-label="Játékinfó">ℹ️
         <span className="info-tooltip">
           Színek jelentése:<br />
           <span style={{ color:"#538d4e" }}>🟩 jó helyen jó betű</span><br />
