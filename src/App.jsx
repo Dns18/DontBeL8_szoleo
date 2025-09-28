@@ -46,7 +46,7 @@ function App() {
 
   // szavak betöltése a public/szolista.json-ból
   useEffect(() => {
-    fetch("/szolista.json")
+    fetch("https://dns18.github.io/DontBeL8_szoleo/szolista.json")
       .then((res) => res.json())
       .then((data) => {
         setWords(data.szavak.map((w) => w.toLowerCase()));

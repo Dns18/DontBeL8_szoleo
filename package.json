@@ -1,9 +1,9 @@
 {
   "name": "szoleoreact",
+  "homepage": "https://Dns18.github.io/DontBeL8_szoleo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Dns18.github.io/DontBeL8_szoleo",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
