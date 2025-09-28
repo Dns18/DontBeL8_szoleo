@@ -2,7 +2,7 @@
 
 ## 1. Cél és áttekintés
 A **Szóleó** egy böngészőben játszható magyar nyelvű szórejtvény játék, amely a Wordle mintájára készült.  
-A cél, hogy a játékos egy véletlenszerűen kiválasztott **6 betűs magyar szót** találjon ki **7 próbálkozás** alatt.  
+A cél, hogy a játékos egy véletlenszerűen kiválasztott **5 betűs magyar szót** találjon ki **6 próbálkozás** alatt.  
 A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal játszható.
 
 ---
@@ -22,7 +22,7 @@ A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal
   - Próbálkozások számlálása, győzelem/vesztés állapot kezelése  
 
 - **Adattárolás**  
-  - **Szólista**: magyar 6 betűs szavak JSON fájlban  
+  - **Szólista**: magyar 5 betűs szavak JSON fájlban  
   - **Játékállapot**: böngésző `localStorage` (mentés és folytatás lehetősége)  
 
 ### 2.2 Architektúra ábra (logikai modell)
@@ -35,10 +35,10 @@ A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal
 
 1. **Játék indítása**  
    - Betöltődik a szólista  
-   - Kiválasztásra kerül egy véletlen 6 betűs magyar szó  
+   - Kiválasztásra kerül egy véletlen 5 betűs magyar szó  
 
 2. **Felhasználói bemenet**  
-   - A játékos beír egy 6 betűs szót  
+   - A játékos beír egy 5 betűs szót  
    - A rendszer ellenőrzi, hogy érvényes szó-e  
 
 3. **Értékelés és visszajelzés**  
@@ -51,14 +51,14 @@ A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal
      - ⬜️ nem szerepel a szóban  
 
 4. **Játékmenet folytatása**  
-   - Maximum 7 próbálkozás  
+   - Maximum 6 próbálkozás  
    - Nyert/vesztett állapot megjelenítése  
 
 ---
 
 ## 4. Felhasználói felület terve
 
-- **Játékrács**: 7 sor × 6 oszlop  
+- **Játékrács**: 6 sor × 5 oszlop  
 - **Virtuális billentyűzet**: magyar ábécé betűi (ékezetes karakterekkel)  
 - **Téma támogatás**: sötét/világos mód, automatikus váltás `prefers-color-scheme` alapján  
 
@@ -72,7 +72,7 @@ A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal
   - React / JavaScript (ES6+) – játéklogika  
 
 - **Adattárolás**:  
-  - Szólista: JSON állomány (6 betűs magyar szavak)  
+  - Szólista: JSON állomány (5 betűs magyar szavak)  
   - Játékállapot: böngésző `localStorage`  
 
 - **Követelmények**:  
@@ -128,3 +128,4 @@ A rendszer webes frontend technológiákra épül, telepítés nélkül, azonnal
 - **Komponens diagram:** UI ↔ Játéklogika ↔ Adatok
 - **Folyamatábra:** játék indítása → szóválasztás → felhasználói input → ellenőrzés → visszajelzés → próbálkozás számolás → nyert/vesztett állapot
 - **Állapotdiagram:** játék indítás → próbálkozás → győzelem/vesztés → új játék
+
