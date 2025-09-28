@@ -12,6 +12,7 @@ const WORD_LENGTH = 5;
 const MAX_GUESSES = 6;
 
 function App() {
+  // játékállapotok
   const [words, setWords] = useState([]);
   const [solution, setSolution] = useState("");
   const [board, setBoard] = useState(
@@ -27,28 +28,38 @@ function App() {
   const [scoreList, setScoreList] = useState([]);
   const [darkMode, setDarkMode] = useState(true);
 
-  // Light / dark mód kezelése a <body>-n
+  // virtuális billentyűzet színállapotai
+  const [keyStates, setKeyStates] = useState({});
+  // prioritás a billentyű színek felülírásához
+  const priority = {
+    absent: 0,
+    almostpresent: 1,
+    present: 2,
+    almostcorrect: 3,
+    correct: 4,
+  };
+
+  // light/dark mód body osztály
   useEffect(() => {
     document.body.classList.toggle("light", !darkMode);
   }, [darkMode]);
 
-  // Szólista betöltése a public/szolista.json-ból
+  // szavak betöltése a public/szolista.json-ból
   useEffect(() => {
     fetch("/szolista.json")
       .then((res) => res.json())
       .then((data) => {
         setWords(data.szavak.map((w) => w.toLowerCase()));
       })
-      .catch(() => {
-        console.error("Nem találom a /szolista.json fájlt!");
-      });
+      .catch(() => console.error("Nem találom a /szolista.json fájlt!"));
   }, []);
 
-  // Új játék, amikor a words egyszer betöltődött
+  // új játék indítása, ha betöltődött a lista
   useEffect(() => {
     if (words.length) startGame();
   }, [words]);
 
+  // játék indítása / reset
   const startGame = () => {
     const rand = words[Math.floor(Math.random() * words.length)];
     setSolution(rand);
@@ -61,13 +72,16 @@ function App() {
     setCurrentRow(0);
     setCurrentCol(0);
     setMessage("");
+    setKeyStates({});
   };
 
+  // feladás
   const giveUp = () => {
     setScoreList((prev) => [...prev, { word: solution, points: 0 }]);
     setMessage(`Feladtad! A szó: ${solution.toUpperCase()} | Pont: 0`);
   };
 
+  // gombnyomás kezelése
   const handleKey = (key) => {
     // Backspace
     if (key === "Backspace") {
@@ -89,10 +103,25 @@ function App() {
       const guess = board[currentRow].join("");
       const result = evaluateGuess(guess, solution);
 
-      const newStates = cellStates.map((r) => [...r]);
-      newStates[currentRow] = result;
-      setCellStates(newStates);
+      // kirajzoljuk a cellákra a színeket
+      const newCellStates = cellStates.map((r) => [...r]);
+      newCellStates[currentRow] = result;
+      setCellStates(newCellStates);
 
+      // frissítjük a virtuális billentyűzet státuszát
+      setKeyStates((old) => {
+        const updated = { ...old };
+        guess.split("").forEach((ch, i) => {
+          const st = result[i];
+          const prev = updated[ch] || "absent";
+          if (priority[st] > priority[prev]) {
+            updated[ch] = st;
+          }
+        });
+        return updated;
+      });
+
+      // nyerés
       if (guess === solution) {
         const pts = getPoints(currentRow, MAX_GUESSES);
         setScore((s) => s + pts);
@@ -101,19 +130,23 @@ function App() {
         return;
       }
 
+      // vesztés
       if (currentRow + 1 === MAX_GUESSES) {
         setScoreList((list) => [...list, { word: solution, points: 0 }]);
-        setMessage(`Vesztettél. A szó: ${solution.toUpperCase()} | Pont: 0`);
+        setMessage(
+          `Vesztettél. A szó: ${solution.toUpperCase()} | Pont: 0`
+        );
         return;
       }
 
+      // következő sor
       setCurrentRow((r) => r + 1);
       setCurrentCol(0);
       setMessage("");
       return;
     }
 
-    // Betűk
+    // betűk
     if (/^[a-zA-Záéíóöőúüű]$/.test(key)) {
       if (currentCol < WORD_LENGTH) {
         const b = board.map((r) => [...r]);
@@ -124,7 +157,7 @@ function App() {
     }
   };
 
-  // Fizikai billentyűzet esemény
+  // fizikai billentyűzet esemény
   useEffect(() => {
     const listener = (e) => {
       if (
@@ -145,7 +178,7 @@ function App() {
       <h1>Szóleó</h1>
       <div id="game">
         <Board board={board} cellStates={cellStates} />
-        <Keyboard onKey={handleKey} />
+        <Keyboard onKey={handleKey} keyStates={keyStates} />
         <Controls
           onNewGame={startGame}
           onGiveUp={giveUp}

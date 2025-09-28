@@ -6,20 +6,27 @@ const KEYS = [
   ["Enter","y","x","c","v","b","n","m","ö","ü","Backspace"]
 ];
 
-function Keyboard({ onKey }) {
+function Keyboard({ onKey, keyStates }) {
   return (
     <div className="keyboard">
       {KEYS.map((row, rIdx) => (
         <div className="keyrow" key={rIdx}>
-          {row.map((k) => (
-            <div
-              key={k}
-              className={`key ${k === "Enter" || k === "Backspace" ? "wide" : ""}`}
-              onClick={() => onKey(k)}
-            >
-              {k.length > 1 ? k : k.toUpperCase()}
-            </div>
-          ))}
+          {row.map((k) => {
+            const stateClass = k.length === 1 ? keyStates[k] || "" : "";
+            const wideClass = k === "Enter" || k === "Backspace" ? "wide" : "";
+            return (
+              <div
+                key={`${rIdx}-${k}`}
+                className={`key${stateClass ? " " + stateClass : ""}${wideClass ? " " + wideClass : ""}`}
+                onClick={() => onKey(k)}
+                role="button"
+                tabIndex={0}
+                aria-label={k}
+              >
+                {k.length > 1 ? k : k.toUpperCase()}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
